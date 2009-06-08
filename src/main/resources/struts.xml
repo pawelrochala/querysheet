@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+
+   <constant name="struts.devMode" value="true" />
+ 	
+		
+	<constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
+		
+		<package name="querysheet" namespace="/" extends="struts-default">
+			
+			<!-- Deklaracje interceptorów i stosu  -->
+			
+			<interceptors>
+				<interceptor-stack name="myStack">
+					<interceptor-ref name="defaultStack"/>
+					<interceptor-ref name="authentication"/>
+				</interceptor-stack>
+				
+				<interceptor name="authentication"
+					class="pl.pawelrochala.interceptors.AuthenticationInterceptor"/>
+				<interceptor name="permission"
+					class="pl.pawelrochala.interceptors.PermissionInterceptor"/>
+				
+			</interceptors>
+			
+			<default-interceptor-ref name="myStack"></default-interceptor-ref>
+			
+			<global-results>
+				<result name="login" type="redirect">login</result>
+			</global-results>
+			
+			<!-- Akcje ogólne -->
+			
+			<action name="login" class="pl.pawelrochala.actions.flow.Login">
+				<interceptor-ref name="defaultStack"/>
+				<result name="success" type="dispatcher">/WEB-INF/jsp/account.jsp</result>
+				<result name="none" type="chain">prepareUserView</result>
+				<result name="input">/WEB-INF/jsp/login.jsp</result>
+			</action>
+			
+			<action name="loginTwo" class="pl.pawelrochala.actions.flow.LoginTwo">
+				<result name="success" type="chain">prepareUserView</result>
+				<result name="input">/WEB-INF/jsp/login.jsp</result>
+			</action>
+			
+			<!-- Akcje związane z userem -->
+			
+			<action name="createUser"
+				class="pl.pawelrochala.actions.user.createUser">
+				<result name="success" type="redirect">prepareUserView</result>
+				<result name="input">/WEB-INF/jsp/user/createUser.jsp</result>
+			</action>
+			
+			<action name="prepareEditionUser"
+				class="pl.pawelrochala.actions.user.PrepareEditionUser">
+				<result name="success">/WEB-INF/jsp/user/editUser.jsp</result>
+			</action>
+			
+			<action name="prepareCreateUser"
+				class="pl.pawelrochala.actions.user.PrepareCreateUser">
+				<result name="success" type="dispatcher">
+					/WEB-INF/jsp/user/createUser.jsp</result>
+			</action>
+			
+			<action name="prepareDeleteUser"
+				class="pl.pawelrochala.actions.user.PrepareDeleteUser">
+				<result name="success" type="dispatcher">
+					/WEB-INF/jsp/user/confirmdeleteuser.jsp</result>
+			</action>
+			
+			<action name="deleteUser"
+				class="pl.pawelrochala.actions.user.DeleteUser">
+				<result name="success" type="chain">prepareUserView</result>
+			</action>
+			
+			<action name="prepareUserView"
+				class="pl.pawelrochala.actions.user.PrepareUserView">
+				<result name="success">/WEB-INF/jsp/user/usersView.jsp</result>
+			</action>
+			
+			<action name="updateUser"
+				class="pl.pawelrochala.actions.user.UpdateUser">
+				<result name="success" type="chain">prepareUserView</result>
+			</action>
+			
+			<!-- Akcje związane z katedrami -->
+			
+			<action name="prepareFacultyView"
+				class="pl.pawelrochala.actions.faculty.PrepareFacultyView">
+				<result name="success">
+					/WEB-INF/jsp/faculty/facultysView.jsp</result>
+			</action>
+			
+			<action name="addFaculty"
+				class="com.opensymphony.xwork2.ActionSupport">
+				<result name="success">
+					/WEB-INF/jsp/faculty/createFaculty.jsp</result>
+			</action>
+			
+			<action name="createFaculty"
+				class="pl.pawelrochala.actions.faculty.createFaculty">
+				<result name="success">
+					/WEB-INF/jsp/faculty/facultysView.jsp</result>
+			</action>
+			
+		</package>
+</struts>

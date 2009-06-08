@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost/querysheet" />
+        <property name="username" value="root" />
+        <property name="password" value="123dupa123" />
+        <property name="initialSize" value="2" />
+        <property name="maxActive" value="20" />
+    </bean>
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="annotatedClasses">
+            <list>
+                <value>pl.pawelrochala.users.User</value>
+                <value>pl.pawelrochala.model.author.Faculty</value>
+                <value>pl.pawelrochala.model.author.Author</value>
+                <value>pl.pawelrochala.model.author.UniversityAuthor</value>
+                <value>pl.pawelrochala.model.periodicalPublisher.Periodical</value>
+                <value>pl.pawelrochala.model.periodicalPublisher.PeriodicalType</value>
+                 <value>pl.pawelrochala.model.periodicalPublisher.Publisher</value>
+                <value>pl.pawelrochala.model.publicationMonograph.Monograph</value>
+                <value>pl.pawelrochala.model.publicationMonograph.MonographType</value>
+                <value>pl.pawelrochala.model.publicationMonograph.Publication</value>
+                <value>pl.pawelrochala.model.publicationMonograph.PublicationType</value>
+               <value>pl.pawelrochala.model.publicationMonograph.Questionnaire</value>
+            
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="userDao" class="pl.pawelrochala.Dao.UserDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="facultyDao" class="pl.pawelrochala.Dao.FacultyDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="login" class="pl.pawelrochala.actions.flow.Login" scope="prototype">
+        <property name="userDao" ref="userDao" />
+        <property name="facultyDao" ref="facultyDao" />
+    </bean>         
+    <!--                  
+    <bean id="prepareUserView" class="pl.pawelrochala.actions.user.PrepareUserView" scope="prototype">
+        <property name="userDao" ref="userDao" />
+    </bean>
+    
+    <bean id="createUser" class="pl.pawelrochala.actions.user.CreateUser" scope="prototype">
+        <property name="userDao" ref="userDao" />
+    </bean>
+    
+    -->
+</beans>

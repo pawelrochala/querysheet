@@ -1,0 +1,42 @@
+@CHARSET "UTF-8";
+a {
+	color: #035899;
+	text-decoration: none;
+}
+
+ body {
+  width:750px;
+  min-width:750px;
+  max-width:60em;
+  margin: 0 auto;
+  
+ }
+
+a:HOVER {
+	text-decoration: underline;
+}
+
+#bar img:HOVER {
+	background-color: #D3E0EB;
+	
+}
+
+h1, h2,h3{
+	color: #E77919;
+	}
+.odd {
+background-color:#D3E0EB;	
+	}
+#bar{		
+
+width: 750px;
+margin-top: 2px;
+}
+
+#footer{
+color:gray;
+border-top: 1px solid;
+border-color: gray;
+font-size: 10px;
+width: 750px;
+}
